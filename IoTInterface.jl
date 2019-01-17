@@ -9,11 +9,11 @@ Blue=2
 LTE=3
 T=[Wifi,Blue,LTE]
 #setting capacity of interface
-Cap=[500,100,20]
+Cap=[1000,500,100]
 #
 rate=[10,5,2]
 #define a set of devices
-N=10 #numbers of devices
+N=50 #numbers of devices
 #interface-device matrix
 interface_devices=rand(0:1,N,length(T))
 
@@ -61,12 +61,25 @@ end
 @setObjective(myModel, Min, obj) # Sets the objective to be minimized. For maximization use Max
 
 println("The optimization problem to be solved is:")
-print(myModel) # Shows the model constructed in a human-readable form
+#print(myModel) # Shows the model constructed in a human-readable form
 
 #SOLVE IT AND DISPLAY THE RESULTS
 #--------------------------------
 status = solve(myModel) # solves the model
 
 println("Objective value: ", getObjectiveValue(myModel)) # getObjectiveValue(model_name) gives the optimum objective value
-println("x = ", getValue(x))
+#println("x = ", getValue(x))
+a=getValue(x)
+for i=1:N
+    print("Device ",i," active interface ")
+    for j=1:length(T)
+        if a[i,j]==1
+            if j==Wifi print("Wifi\n")
+            elseif j==Blue print("Bluetooth\n")
+            else print("LTE\n")
+            end
+        end
+
+    end
+end
 # getValue(decision_variable) will give the optimum value of the associated decision variable
